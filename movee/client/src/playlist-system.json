@@ -1,0 +1,13 @@
+[
+  {
+    "playlist_id": "1",
+    "user_id": "user-id",
+    "playlist-name": "watch-later",
+    "removable": false
+  },
+  {
+    "playlist_id": "0",
+    "playlist_item_id": "1",
+    "movie_id": "2"
+  }
+]

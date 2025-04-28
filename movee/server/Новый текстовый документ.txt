@@ -1,0 +1,85 @@
+playlist
+id:
+user_id:
+title:
+removable:
+
+GET('http://api/playlists)
+POST('http://api/playlists', {user_id, title, true})
+DELETE('http://api/playlists/:id)
+
+playlist_item
+id:
+playlist_id:
+movie_id:
+
+GET('http://api/items/:playlist_id)
+POST('http://api/items/:playlist_id, {movie_id})
+DELETE('http://api/items/:id)
+
+async getPlaylists(req, res) {
+    try {
+        const playlists = await Playlist.find()
+        return json(playlists)
+    } catch (error) {
+        res.status(400).json(error)
+    }
+}
+
+async createPlaylist(req, res) {
+    try {
+        const {user_id, title, removable} = req.body
+        const playlist = await Playlist.findOne({user_id, title})
+        if (!playlist) {
+            const new_playlist = new Playlist({user_id, title, removable})
+            return json({message: 'success'})
+        }
+    } catch (error) {
+        res.status(400).json(error)
+    }
+}
+
+async deletePlaylist(req, res) {
+    try {
+        const id = req.params.id
+        await Playlist.deleteOne({id})
+        return json({message: 'success'})
+    } catch (error) {
+        res.status(400).json(error)
+    }
+}
+
+async getPlaylistItems(req, res) {
+    try {
+        const playlist_id = req.params.playlist_id
+        const items = await PlaylistItem.find({playlist_id})
+        return json(items)
+    } catch (error) {
+        res.status(400).json(error)
+    }
+}
+
+async addToPlaylist(req, res) {
+    try {
+        const playlist_id = req.params.playlist_id
+        const movie_id = req.body
+        const item = await PlaylistItem.findOne({playlist_id, movie_id})
+        if (!item) {
+            const new_item = new PlaylistItem({playlist_id, movie_id})
+            return json({message: 'success'})
+        }
+    } catch (error) {
+        res.status(400).json(error)
+    }
+}
+
+async removeFromPlaylist(req, res) {
+    try {
+        const item_id = req.params.id
+        const item = await PlaylistItem.findOne({item_id})
+        await PlaylistItem.deleteOne(item)
+        return json({message: 'success'})
+    } catch (error) {
+        res.status(400).json(error)
+    }
+}

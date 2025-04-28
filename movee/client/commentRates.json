@@ -1,0 +1,8 @@
+[
+  {
+    "id": "id-of-rate",
+    "commentID": "id-of-comment",
+    "userID": "id-of-user",
+    "status": "like/dislike"
+  }
+]
